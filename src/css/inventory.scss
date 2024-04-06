@@ -1,0 +1,152 @@
+    .inv-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .inv-items {
+        overflow: auto;
+        scrollbar-width: none;
+
+        scrollbar-width: thin;
+        scrollbar-color: transparent transparent;
+        scrollbar-width: thin;
+    }
+
+    //CSS for the inventory cards in managers 
+    //inv management screen
+    .inv-item {
+        padding: 10px 5px;
+        margin: 10px auto;
+        max-width: 40vw;
+        min-width: 300px;
+
+        border-radius: 15px;
+        background-color: dimgrey;
+
+        display: grid;
+        grid-template-columns: 20% 50% 30%;
+        grid-template-rows: 100px;        
+    }
+
+    .inv-item-img {
+        padding:10px;
+        display: flex;
+        flex-direction: column;
+        justify-content:center;
+
+        img {
+            width: 100%;
+            border-radius: 25px;
+        }
+    }
+
+    .inv-item-info {
+        text-align: left;
+    }
+
+    .inv-item-button {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        padding: 5px 10px;
+    }
+
+    .inv-item-footer {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .inv-footer {
+        height: 5vh;
+    }
+
+    //Inventory Groups
+    .inv-group {
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+    }
+
+    .inv-group-header {
+        width: 100%;
+        margin: 10px auto;
+        display: grid;
+        grid-template-columns: 20% 60% 20%
+    }
+
+    .inv-group-text {
+        text-align: left;
+        margin: auto;
+    }
+
+    .inv-add-button {
+        margin: auto;
+    }
+
+    .inv-group-items {
+        width: 100%;
+        margin: auto;
+        overflow-y: hidden;
+        background: fixed;
+
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 20vw));
+        gap: 10px;
+    }
+
+    .inv-size-container {
+        display: grid;
+        grid-template-columns: repeat(2, 40%);
+        justify-content: center;
+    }
+
+    .inv-input {
+        width: 40%;
+    }
+
+    //Inventory Dialog    
+    .inv-dialog {
+        --min-width: 400px;
+        overflow-y: hidden;
+        scrollbar-width: 0;
+    }
+
+    .inv-dialog-header {
+        width: 100%;
+        text-align: center;
+    }
+
+    .inv-dialog-body {
+        width: 100%;
+    }
+
+    .inv-dialog-spacer {
+        height: 20px;
+    }
+
+    .inv-dialog::part(panel) {
+        width: 40vw;
+    }
+
+    .inv-dialog::part(header) {
+        height: 0px;
+    }
+
+    .inv-dialog::part(close-button) {
+        width: 0;
+        height: 0;
+    }
+
+    .inv-dialog-image {
+        width: 60%;
+        margin: 0 auto;
+
+        img {
+            width: 100%;
+        }
+    }

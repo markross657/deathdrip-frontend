@@ -1,0 +1,34 @@
+.access-container{
+    width:100%;
+    height:100%;
+    display:block;
+    flex-direction: column;
+    align-items: center;     
+}
+
+.access-logo{
+    width: 300px;
+    margin: 20px auto;
+
+    img{
+        width: 200px;
+        height: 200px;
+        margin: 0;
+    }
+}
+
+.access-form{
+
+}
+
+.access-form-field{
+
+}
+
+.access-form-error{
+
+}
+
+.access-form-buttons{
+    margin-top: 20px;
+}
