@@ -1,3 +1,4 @@
+import React from 'react';
 import MenuItem from './MenuItem'
 import '../../css/menu.css'
 import MenuService from '../../services/InventoryService';

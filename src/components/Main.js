@@ -6,6 +6,7 @@ import Cart from "./cart/Cart"
 import Account from "./users/Account";
 import UserService from "../services/UserService";
 import Inventory from "./inventory/Inventory";
+import React from "react";
 
 const Main = () => {
 

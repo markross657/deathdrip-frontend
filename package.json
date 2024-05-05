@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@netlify/functions": "^2.4.0",
+    "@parcel/config-default": "^2.12.0",
+    "@parcel/optimizer-htmlnano": "^2.12.0",
     "@shoelace-style/react-wrapper": "^1.0.3",
     "@shoelace-style/shoelace": "^2.11.2",
     "@testing-library/jest-dom": "^5.17.0",
@@ -19,7 +21,8 @@
     "react-bootstrap": "^2.9.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
+    "sass": "^1.76.0",
     "serverless-http": "^3.2.0",
     "sharp": "^0.32.6",
     "web-vitals": "^2.1.4"
@@ -29,8 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build-scss": "node-sass src/css/ -o src/css",
-    "pre-start": "node-sass src/css/ -o src/css"
+    "build-scss": "sass src/css/:src/css/",
+    "pre-start": "sass src/css/:src/css/"
   },
   "eslintConfig": {
     "extends": [
@@ -51,9 +54,11 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/preset-env": "^7.24.5",
     "@parcel/packager-raw-url": "^2.10.3",
     "@parcel/transformer-webmanifest": "^2.10.3",
-    "node-sass": "^7.0.3",
     "parcel": "^2.10.3",
     "process": "^0.11.10"
   }
