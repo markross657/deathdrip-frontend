@@ -1,26 +1,36 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# This workflow will do a clean installation of node dependencies using Yarn, cache/restore them,
+# build the source code and run tests across different versions of node.
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
 
-name: Node.js CI
+name: Node.js CI  # Name of the workflow
 
-on:
-  push:
-    branches: [ "main" ]
+on:  # This specifies when the workflow will run
+  push:  # Triggers the workflow on push events
+    branches: [ "main" ]  # Only run this workflow when the push is to the main branch
 
-jobs:
+jobs:  # Defines the jobs to be run
   build:
-    runs-on: self-hosted
+    runs-on: self-hosted  # Specifies that the job runs on self-hosted runners
 
-    strategy:
+    strategy:  # A strategy matrix can run tests across different versions of Node.js
       matrix:
-        node-version: [18.x] 
+        node-version: [18.x]  # Specifies the Node.js version to use
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
+    - uses: actions/checkout@v4  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+
+    - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present 
+        cache: 'yarn'  # Enables caching of Yarn dependencies
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile  # Equivalent to npm ci
+
+    - name: Build
+      run: yarn build --if-present  # Runs the build script defined in package.json
+
+    # You might also want to include a test script if applicable
+    # - name: Run tests
+    #   run: yarn test
