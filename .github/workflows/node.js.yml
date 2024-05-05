@@ -10,29 +10,36 @@ on:  # This specifies when the workflow will run
 
 jobs:  # Defines the jobs to be run
   build:
-    runs-on: self-hosted 
+    runs-on: self-hosted  # Specifies that the job runs on a self-hosted runner
 
     strategy:  # A strategy matrix can run tests across different versions of Node.js
       matrix:
-        node-version: [18.x]
+        node-version: [18.x]  # Specifies the Node.js version to use
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
 
     - name: Print environment PATH and Yarn version
       run: |
-        echo $PATH
+        echo "Original PATH: $PATH"
         yarn --version
         which yarn
+
+    - name: Configure PATH
+      run: echo "PATH=$HOME/.yarn/bin:$PATH" >> $GITHUB_ENV  # Add the correct Yarn path to the GitHub Actions environment PATH
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'  
+        cache: 'yarn'  # Enables caching of Yarn dependencies
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile 
+      run: yarn install --frozen-lockfile  # Installs dependencies using Yarn, ensuring the lock file is respected and not modified
 
     - name: Build
-      run: yarn build --if-present 
+      run: yarn build --if-present  # Runs the build script defined in package.json, only if it's present
+
+    # Optional: Run tests if you have a test script in your package.json
+    # - name: Run tests
+    #   run: yarn test
