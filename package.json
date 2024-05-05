@@ -25,7 +25,8 @@
     "sass": "^1.76.0",
     "serverless-http": "^3.2.0",
     "sharp": "^0.32.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "yarn": "^1.22.22"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -61,5 +62,9 @@
     "@parcel/transformer-webmanifest": "^2.10.3",
     "parcel": "^2.10.3",
     "process": "^0.11.10"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/markross657/deathdrip-frontend.git",
+  "author": "markross657 <55301276+markross657@users.noreply.github.com>",
+  "license": "MIT"
 }
