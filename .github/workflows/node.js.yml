@@ -23,14 +23,10 @@ jobs:  # Defines the jobs to be run
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'yarn'  # Enables caching of Yarn dependencies
+        cache: 'yarn'  
 
     - name: Install dependencies
-      run: yarn install --frozen-lockfile  # Equivalent to npm ci
+      run: yarn install --frozen-lockfile 
 
     - name: Build
-      run: yarn build --if-present  # Runs the build script defined in package.json
-
-    # You might also want to include a test script if applicable
-    # - name: Run tests
-    #   run: yarn test
+      run: yarn build --if-present 
