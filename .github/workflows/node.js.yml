@@ -6,18 +6,18 @@ name: Node.js CI  # Name of the workflow
 
 on:  # This specifies when the workflow will run
   push:  # Triggers the workflow on push events
-    branches: [ "main" ]  # Only run this workflow when the push is to the main branch
+    branches: [ "main" ] 
 
 jobs:  # Defines the jobs to be run
   build:
-    runs-on: self-hosted  # Specifies that the job runs on self-hosted runners
+    runs-on: self-hosted 
 
     strategy:  # A strategy matrix can run tests across different versions of Node.js
       matrix:
-        node-version: [18.x]  # Specifies the Node.js version to use
+        node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v4  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
