@@ -1,5 +1,5 @@
 import UserService from "./UserService";
-const API_BASE_URL = 'https://deathdrip-api-1ec5c7435dc5.herokuapp.com';
+const API_BASE_URL = process.env.API_BASE_URL
 
 class OrderService {
     constructor() {

@@ -1,13 +1,16 @@
-import './css/App.css'
+import React, { useState, useEffect } from 'react';
+
 import Login from './components/login/Login';
 import Main from './components/Main';
-import React, { useState, useEffect } from 'react';
 import '@shoelace-style/shoelace/dist/themes/dark.css';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path';
+
+import './css/App.css'
 import './css/style.scss';
-import UserService from './services/UserService';
 import './css/access.css';
 import './css/account.css';
+
+import UserService from './services/UserService';
 
 function App() {
     const[hasUser, setHasUser] = useState(UserService.getUser());
