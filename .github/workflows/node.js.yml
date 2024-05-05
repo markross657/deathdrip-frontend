@@ -19,6 +19,12 @@ jobs:  # Defines the jobs to be run
     steps:
     - uses: actions/checkout@v4
 
+    - name: Print environment PATH and Yarn version
+      run: |
+        echo $PATH
+        yarn --version
+        which yarn
+
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
