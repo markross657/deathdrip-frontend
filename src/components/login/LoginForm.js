@@ -59,10 +59,12 @@ const LoginForm = ({ setActiveForm }) => {
                         Login
                     </SlButton>
                     <div>
-                        <p>Don't have an account?</p>
-                        <SlButton variant="primary" onClick={() => setActiveForm('Register')}>
-                            Register
-                        </SlButton>
+                        <p>
+                            Don't have an account?
+                            <SlButton variant="text" onClick={() => setActiveForm('Register')}>
+                                Register
+                            </SlButton>
+                        </p>                        
                     </div>
                 </div>
             </form>

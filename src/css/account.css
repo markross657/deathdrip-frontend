@@ -1,81 +1,104 @@
 .account-details {
   border: 1px solid white;
-  align-items: center; }
+  align-items: center;
+}
 
 .account-update-form {
-  border: 1px solid red; }
+  border: 1px solid red;
+}
 
 .input-group {
   margin: 10px;
-  max-width: 300px; }
+  max-width: 300px;
+}
 
 .spacer {
-  height: 50px; }
+  height: 50px;
+}
 
 .account-data {
   border: 1px solid white;
   width: 80vw;
   display: flex;
   flex-direction: row;
-  align-items: center; }
+  align-items: center;
+}
 
 .account-information {
   border: 1px solid white;
-  height: 100%; }
+  height: 100%;
+}
 
 .account-avatar {
-  height: 100%; }
-  .account-avatar img {
-    max-width: 250px;
-    max-height: 250px; }
+  height: 100%;
+}
+.account-avatar img {
+  max-width: 250px;
+  max-height: 250px;
+}
 
 .account-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0; }
-  .account-page .account-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid white;
-    margin: 10px;
-    max-width: 600px; }
-    .account-page .account-details .account-update-form {
-      border: 1px solid red;
-      width: 100%;
-      margin-bottom: 100px; }
-      .account-page .account-details .account-update-form .input-group {
-        margin: 10px;
-        max-width: 300px; }
+  margin: 0;
+}
+.account-page .account-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  margin: 10px;
+  max-width: 600px;
+}
+.account-page .account-details .account-update-form {
+  border: 1px solid red;
+  width: 100%;
+  margin-bottom: 100px;
+}
+.account-page .account-details .account-update-form .input-group {
+  margin: 10px;
+  max-width: 300px;
+}
 
 .account-image-dialog {
-  --max-width: 300px; }
+  --max-width: 300px;
+}
 
 .account-image-dialog-header {
   height: 0;
-  text-align: center; }
+  text-align: center;
+}
 
 .account-image-dialog-body {
-  width: 100%; }
+  width: 100%;
+}
 
 .account-image-dialog-spacer {
-  height: 20px; }
+  height: 20px;
+}
 
 .account-image-dialog::part(panel) {
-  width: 40vw; }
+  width: 40vw;
+}
 
 .account-image-dialog::part(header) {
-  height: 0px; }
+  height: 0px;
+}
 
 .account-image-dialog::part(close-button) {
   width: 0;
-  height: 0; }
+  height: 0;
+}
 
 .account-image-dialog-image {
   width: 60%;
-  margin: 0 auto; }
-  .account-image-dialog-image img {
-    width: 100%; }
+  margin: 0 auto;
+}
+.account-image-dialog-image img {
+  width: 100%;
+}
+
+/*# sourceMappingURL=account.css.map */

@@ -6,7 +6,7 @@ const Login = () => {
     const [activeForm, setActiveForm] = useState('Login')
 
     return (
-        <div>
+        <div className="login-container">
             <div className="access-logo">
                 <img alt='logo' src='./ObsidianFox.png'></img>
                 <div>

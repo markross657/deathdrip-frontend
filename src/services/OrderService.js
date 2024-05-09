@@ -1,19 +1,17 @@
 import UserService from "./UserService";
-const API_BASE_URL = process.env.API_BASE_URL
+const API_BASE_URL='http://localhost:3520'
 
 class OrderService {
     constructor() {
-        this.orders = JSON.parse(sessionStorage.getItem('orders'))
-        this.activeOrder = null
-        this.startUpdateTimer()
-        this.getOrdersFromAPI()
+        this.orders = [];
+        this.activeOrder = null;
     }
 
     // Start a timer to update the menu from the API periodically
     startUpdateTimer() {
         setInterval(async () => {
             await this.getOrdersFromAPI();
-        }, 15000); // 60 seconds (in milliseconds)
+        }, 15000);
     }
 
     async getOrdersFromAPI() {

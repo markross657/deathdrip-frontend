@@ -22,7 +22,9 @@
 }
 
 .access-form-field{
-
+    display: grid;
+    grid-template-columns: 30% 70%;
+    width: 100%;
 }
 
 .access-form-error{

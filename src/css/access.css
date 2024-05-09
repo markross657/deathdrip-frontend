@@ -3,15 +3,27 @@
   height: 100%;
   display: block;
   flex-direction: column;
-  align-items: center; }
+  align-items: center;
+}
 
 .access-logo {
   width: 300px;
-  margin: 20px auto; }
-  .access-logo img {
-    width: 200px;
-    height: 200px;
-    margin: 0; }
+  margin: 20px auto;
+}
+.access-logo img {
+  width: 200px;
+  height: 200px;
+  margin: 0;
+}
+
+.access-form-field {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  width: 100%;
+}
 
 .access-form-buttons {
-  margin-top: 20px; }
+  margin-top: 20px;
+}
+
+/*# sourceMappingURL=access.css.map */

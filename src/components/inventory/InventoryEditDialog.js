@@ -4,7 +4,7 @@ import SlInput from '@shoelace-style/shoelace/dist/react/input';
 import SlTextarea from '@shoelace-style/shoelace/dist/react/textarea';
 import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
 import '../../css/inventory.css'
-import InventoryService from '../../services/InventoryService';
+import InventoryService from '../../services/ProductService';
 
 const InventoryEditDialog = ({ handleCloseEditDialog, item }) => {
 

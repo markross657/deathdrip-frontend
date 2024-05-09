@@ -3,7 +3,7 @@ import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import SlInput from '@shoelace-style/shoelace/dist/react/input';
 import SlTextarea from '@shoelace-style/shoelace/dist/react/textarea';
 import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
-import InventoryService from '../../services/InventoryService';
+import InventoryService from '../../services/ProductService';
 import '../../css/inventory.css'
 
 const InventoryAddDialog = ({ handleCloseAddDialog, cat }) => {

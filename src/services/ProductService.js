@@ -1,18 +1,35 @@
 import UserService from "./UserService";
+const API_BASE_URL='http://localhost:3520'
 
-const API_BASE_URL = process.env.API_BASE_URL
+class ProductService {
 
-class InventoryService {
     constructor() {
-        this.menu = JSON.parse(sessionStorage.getItem('menu'))
-        this.startMenuUpdateTimer()
+        this.subscribers = [];
+        this.products = [];
+        this.productCategories = [];    
+            
+        this.fetchProductCategories();
+        this.fetchProducts();
     }
 
-    // Function to fetch menu items from an API
-    async fetchMenu() {
+    //Subscribers
+    subscribe(callback) {
+        this.subscribers.push({ callback });
+        return () => {
+            this.subscribers = this.subscribers.filter(subscriber => subscriber.callback !== callback);
+        };
+    }
+
+    notifySubscribers() {
+        this.subscribers.forEach(subscriber => {
+            subscriber.callback(this.getGroupedProducts());
+        });
+    }
+
+    //API CALLS
+    async fetchProducts() {
         try {
-            // Replace with your actual API endpoint
-            const response = await fetch(API_BASE_URL + '/menu/', {
+            const response = await fetch(API_BASE_URL + '/products/', {
                 method: 'GET',
                 headers: {
                     'Authorization': "Bearer " + UserService.getToken(),
@@ -20,20 +37,91 @@ class InventoryService {
                 }
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch menu items from the API')
-            }
+            if (response.ok)
+            {
+                const data = await response.json();
 
-            const data = await response.json();
-
-            if (data.length === 0) {
-                return "No menu items received"
+                if (data.length === 0) {
+                    return "No products received"
+                }
+    
+                this.menu = data
+                this.updateSessionStorage();
+                this.notifySubscribers();
             }
-            this.menu = data
-            this.updateSessionStorage()
+            else 
+            {
+                const errorData = await response.json();
+                const errorMessage = errorData.message || 'Unknown error'
+
+                switch (response.status) {
+                    case 400:
+                        throw new Error(`Bad request: ${errorMessage}`);
+                    case 401:
+                        throw new Error(`Unauthorized: ${errorMessage}`);
+                    case 403:
+                        throw new Error(`Forbidden: ${errorMessage}`);
+                    case 404:
+                        throw new Error(`Not Found: ${errorMessage}`);
+                    case 500:
+                        throw new Error(`Internal Server Error: ${errorMessage}`);
+                    default:
+                        throw new Error(`An error occurred: ${errorMessage}`);
+                }
+            }            
         }
         catch (error) {
-            console.error('Error fetching and organizing menu items from the API:', error);
+            console.error('Error occured while retreiving Products:\n', error);
+        }
+    }
+
+    async fetchProductCategories(){
+        try {
+            const response = await fetch(API_BASE_URL + '/products/categories', {
+                method: 'GET',
+                headers: {
+                    'Authorization': "Bearer " + UserService.getToken(),
+                    'Content-type': 'application/json',
+                }
+            });
+
+            if (response.ok)
+            {
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    return "No menu items received"
+                }
+    
+                this.productCategories = data
+                console.log("Product Categories Fetched:")
+                console.log(data)
+                this.updateSessionStorage()
+                this.notifySubscribers();
+            }
+            else 
+            {
+                const errorData = await response.json();
+                const errorMessage = errorData.message || 'Unknown error'
+
+                switch (response.status) {
+                    case 400:
+                        throw new Error(`Bad request: ${errorMessage}`);
+                    case 401:
+                        throw new Error(`Unauthorized: ${errorMessage}`);
+                    case 403:
+                        throw new Error(`Forbidden: ${errorMessage}`);
+                    case 404:
+                        this.menu = [];
+                    case 500:
+                        throw new Error(`Internal Server Error: ${errorMessage}`);
+                    default:
+                        throw new Error(`An error occurred: ${errorMessage}`);
+                }
+            }            
+        }
+        catch (error) {
+            console.error('Error occured while retreiving Products:\n', error);
         }
     }
 
@@ -211,38 +299,29 @@ class InventoryService {
             console.log('NO USER');
             return null;
         }
+    }    
+
+    getGroupedProducts() {       
+        let groupedProducts = {};
+
+        for (let category of this.productCategories) {
+            let categoryName = category.name;
+            groupedProducts[categoryName] = this.products.filter(product => product.category === categoryName);
+        }
+
+        return groupedProducts;
     }
+    
 
-    // Load the menu from the API initially
-    async loadMenuFromApi() {
-        await this.fetchMenu();
-    }
+    updateSessionStorage() 
+    {
+        const products = JSON.stringify(this.products)
+        sessionStorage.setItem('products', products);
 
-    // Start a timer to update the menu from the API periodically
-    startMenuUpdateTimer() {
-        setInterval(async () => {
-            await this.fetchMenu();
-        }, 15000); // 60 seconds (in milliseconds)
-    }
-
-    getMenu() {
-        // Organize menu items into groups by type
-        const menuGroups = {};
-        this.menu.forEach(item => {
-            if (!menuGroups[item.category]) {
-                menuGroups[item.category] = [];
-            }
-            menuGroups[item.category].push(item);
-        });
-
-        return menuGroups;
-    }
-
-    updateSessionStorage() {
-        const menu = JSON.stringify(this.menu)
-        sessionStorage.setItem('menu', menu);
+        const productCategories = JSON.stringify(this.productCategories)
+        sessionStorage.setItem('productCategories', productCategories);
     }
 }
 
-const service = new InventoryService()
+const service = new ProductService()
 export default service

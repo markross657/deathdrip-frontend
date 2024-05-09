@@ -1,21 +1,29 @@
 import React from 'react';
 import MenuItem from './MenuItem'
 import '../../css/menu.css'
-import MenuService from '../../services/InventoryService';
+import productService from '../../services/ProductService';
 
 const Menu = () => {
-  const menuGroups = MenuService.getMenu();
+  const groups = productService.getGroupedProducts();
 
-  return ( 
+  return (
     <div className='menu-container'>
-      {Object.values(menuGroups).map((group, groupIndex) => (
-        <div key={groupIndex}>
-          <h2 className='dd-h2'>{group[0].category}</h2>
-          {group.map(item => (
-            <MenuItem key={item._id} item={item} />
-          ))}
-        </div>
-      ))}
+      {Object.keys(groups).length === 0 ? (
+        <div>There are no menu items available.</div>
+      ) : (
+        Object.entries(groups).map(([category, items], groupIndex) => (
+          <div key={groupIndex}>
+            <h2 className='dd-h2'>{category}</h2>
+            {items.length === 0 ? (
+              <div>No products in this category.</div>
+            ) : (
+              items.map(item => (
+                <MenuItem key={item._id} item={item} />
+              ))
+            )}
+          </div>
+        ))
+      )}
     </div>
   );
 }

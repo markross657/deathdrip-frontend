@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import '../../css/inventory.css'
-import InventoryService from '../../services/InventoryService';
+import InventoryService from '../../services/ProductService';
 
 const InventoryItem = ({ item, handleShowEditDialog }) => {
     const [itemDeleted, setItemDeleted] = useState(false)
