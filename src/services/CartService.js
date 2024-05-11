@@ -1,5 +1,6 @@
 class CartService {
     constructor() {
+        this.subscribers = [];
         //Confirm we are logged in
         const userData = sessionStorage.getItem('user')
         if (userData === null) {
@@ -10,14 +11,28 @@ class CartService {
             const cartData = sessionStorage.getItem('cart');
             this.cartItems = cartData ? JSON.parse(cartData) : [];
         }
-    }    
+    }   
+    
+     //Subscribers
+     subscribe(callback) {
+        this.subscribers.push({ callback });
+        return () => {
+            this.subscribers = this.subscribers.filter(subscriber => subscriber.callback !== callback);
+        };
+    }
+
+    notifySubscribers() {
+        this.subscribers.forEach(subscriber => {
+            subscriber.callback(this.getCartItems());
+        });
+    }
 
     // Add an item to the cart and update sessionStorage
     addToCart(item) {
-        const hasSize = item.hasOwnProperty('size');
-        const existingItem = hasSize
-            ? this.cartItems.find(cartItem => cartItem._id === item._id && cartItem.size === item.size)
-            : this.cartItems.find(cartItem => cartItem._id === item._id && !cartItem.size);
+        console.log("Adding item to card")
+        console.log(item)
+        const existingItem =
+            this.cartItems.find(cartItem => cartItem._id === item._id && cartItem.size === item.size)
     
         if (existingItem) {
             existingItem.quantity += 1;
@@ -69,17 +84,15 @@ class CartService {
     getTotalItemCount() {
         let totalCount = 0;
 
-        // Loop through the cart items and accumulate the quantities
         this.cartItems.forEach((item) => {
-            totalCount += item.quantity; // Assuming each item has a 'quantity' property
+            totalCount += item.quantity;
         });
 
         return totalCount;
     }
 
-    // Calculate the total cost of items in the cart
     calculateTotal() {
-        return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+        return this.cartItems.reduce((total, item) => total + item.size.price * item.quantity, 0);
     }
 
     emptyCart() {
@@ -87,7 +100,6 @@ class CartService {
         this.updateSessionStorage()
     }
 
-    // Update the cart data in sessionStorage
     updateSessionStorage() {
         sessionStorage.setItem('cart', JSON.stringify(this.cartItems));
     }

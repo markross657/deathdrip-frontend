@@ -7,7 +7,7 @@ const InventoryItem = ({ item, handleShowEditDialog }) => {
     const [itemDeleted, setItemDeleted] = useState(false)
 
     const handleDelete = () => {
-        InventoryService.deleteInventoryItem(item._id)
+        InventoryService.deleteProduct(item._id)
         setItemDeleted(true)
     }
 
@@ -20,14 +20,14 @@ const InventoryItem = ({ item, handleShowEditDialog }) => {
                     </div>
                     <div className="inv-item-info">
                         <h3>{item.name}</h3>
-                        <p>
+                        <div>
                             {item.size.map((size, index) => (
                                 <div key={index}>
                                     {`${size.label}: $${size.price}`}
                                     <br />
                                 </div>
                             ))}
-                        </p>
+                        </div>
                     </div>
                     <div className='inv-item-button'>
                         <SlButton size='medium' variant='success' onClick={(e) => handleShowEditDialog(item)}>Edit</SlButton>

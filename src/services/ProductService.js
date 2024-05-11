@@ -45,7 +45,7 @@ class ProductService {
                     return "No products received"
                 }
     
-                this.menu = data
+                this.products = data
                 this.updateSessionStorage();
                 this.notifySubscribers();
             }
@@ -88,14 +88,11 @@ class ProductService {
             if (response.ok)
             {
                 const data = await response.json();
-
                 if (data.length === 0) {
                     return "No menu items received"
                 }
     
                 this.productCategories = data
-                console.log("Product Categories Fetched:")
-                console.log(data)
                 this.updateSessionStorage()
                 this.notifySubscribers();
             }
@@ -113,8 +110,9 @@ class ProductService {
                         throw new Error(`Forbidden: ${errorMessage}`);
                     case 404:
                         this.menu = [];
+                        break;
                     case 500:
-                        throw new Error(`Internal Server Error: ${errorMessage}`);
+                        throw new Error(`Internal Server Error: ${errorMessage}`);                        
                     default:
                         throw new Error(`An error occurred: ${errorMessage}`);
                 }
@@ -125,88 +123,82 @@ class ProductService {
         }
     }
 
-    async createInventoryItem(itemData) {
-        console.log("ITEM DATA")
-        console.log(itemData)
+    async createProduct(productData) {
+        const user = UserService.getUser();
+        if (user === null || user === undefined)
+            return;
 
-        if (!itemData) {
+        console.log("ITEM DATA")
+        console.log(productData)
+
+        if (!productData) {
             console.error('Invalid item data. Cannot create inventory item.');
             return null;
         }
 
-        const user = UserService.getUser();
+        const newProduct = {};
 
-        if (user !== null) {
-            const inventoryItem = {};
-            // Populate the inventory item properties based on your data structure            
-            inventoryItem.name = itemData.name || ''
-            inventoryItem.description = itemData.description || ''
-            inventoryItem.price = itemData.price || null
-            inventoryItem.category = itemData.category || ''
+        // Populate the inventory item properties based on your data structure            
+        newProduct.name = productData.name
+        newProduct.description = productData.description
+        newProduct.category = productData.category
 
-            // Handle Sizes
-            if (itemData.size && Array.isArray(itemData.size)) {
-                inventoryItem.size = itemData.size.map((size) => ({
-                    label: size.label || '',
-                    price: size.price || null,
-                }));
-            }
+        // Handle Sizes
+        if (productData.size && Array.isArray(productData.size)) {
+            newProduct.size = productData.size.map((size) => ({
+                label: size.label,
+                price: size.price,
+            }));
+        }
+        
+        //Do Post
+        try {
+            const response = await fetch(API_BASE_URL + "/products/", {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + UserService.getToken(),
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(newProduct),
+            });
 
-            console.log("created new item")
-            console.log(inventoryItem)
+            if (response.ok) {
+                const createdItem = await response.json()
+                this.products.push(createdItem)
+                this.updateSessionStorage()
+                this.notifySubscribers();
+            } 
+            else 
+            {
+                const errorData = await response.json();
+                const errorMessage = errorData.message || 'Unknown error'
 
-            //Do Post
-            try {
-                const response = await fetch(API_BASE_URL + "/menu/", {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': 'Bearer ' + UserService.getToken(),
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify(inventoryItem),
-                });
-
-                if (response.ok) {
-                    const createdItem = await response.json()
-                    this.menu.push(createdItem)
-                    this.updateSessionStorage()
-                    return createdItem
-                } else {
-                    const errorData = await response.json();
-                    const errorMessage = errorData.message || 'Unknown error'
-
-                    switch (response.status) {
-                        case 400:
-                            throw new Error(`Bad request: ${errorMessage}`);
-                        case 401:
-                            throw new Error(`Unauthorized: ${errorMessage}`);
-                        case 403:
-                            throw new Error(`Forbidden: ${errorMessage}`);
-                        case 404:
-                            throw new Error(`Not found: ${errorMessage}`);
-                        case 500:
-                            throw new Error(`Internal Server Error: ${errorMessage}`);
-                        default:
-                            throw new Error(`An error occurred: ${errorMessage}`);
-                    }
+                switch (response.status) {
+                    case 400:
+                        throw new Error(`Bad request: ${errorMessage}`);
+                    case 401:
+                        throw new Error(`Unauthorized: ${errorMessage}`);
+                    case 403:
+                        throw new Error(`Forbidden: ${errorMessage}`);
+                    case 404:
+                        throw new Error(`Not found: ${errorMessage}`);
+                    case 500:
+                        throw new Error(`Internal Server Error: ${errorMessage}`);
+                    default:
+                        throw new Error(`An error occurred: ${errorMessage}`);
                 }
-            } catch (error) {
-                console.error('Error creating inventory item:', error.message);
-                return null;
             }
-        } else {
-            console.log("NO USER");
+        } catch (error) {
+            console.error('Error creating inventory item:', error.message);
             return null;
         }
+        
     }
 
-    async updateInventoryItem(itemData) {
-        if (UserService.getUser() !== null) {
-            console.log("UPDATING ITEM")
-            console.log("ITEM DATA")
-            console.log(itemData)
+    async updateProduct(itemData) {
+        if (UserService.getUser() !== null) {            
             try {
-                const api = API_BASE_URL + "/menu/" + itemData._id
+                const api = API_BASE_URL + "/products/" + itemData.id;
                 const response = await fetch(api, {
                     method: 'PUT',
                     headers: {
@@ -215,20 +207,28 @@ class ProductService {
                     },
                     body: JSON.stringify(itemData),
                 });
-
+    
                 if (response.ok) {
                     const updatedItem = await response.json();
-                    const index = this.menu.findIndex(item => item._id === updatedItem._id);
-                    if (index !== -1) {
-                        this.menu[index] = updatedItem;
+                    console.log("Updated Item")
+                    console.log(updatedItem)
+                    const index = this.products.findIndex(item => item.id === updatedItem.id);                   
+
+                    if (index !== -1) 
+                    {
+                        console.log("found item")
+                        console.log(index);
+                        console.log(this.products[index]);
+                        this.products[index] = updatedItem;                        
                         this.updateSessionStorage();
+                        this.notifySubscribers();
                     }
-                    return updatedItem;
                 }
                 else {
                     const errorData = await response.json();
                     const errorMessage = errorData.message || 'Unknown error';
-
+    
+                    // Error handling based on response status
                     switch (response.status) {
                         case 400:
                             throw new Error(`Bad request: ${errorMessage}`);
@@ -255,14 +255,15 @@ class ProductService {
             return null;
         }
     }
+    
 
-    async deleteInventoryItem(itemId) {
+    async deleteProduct(itemId) {
         if (UserService.getUser() !== null) {
             console.log("DELETING ITEM");
             console.log("ITEM ID", itemId);
 
             try {
-                const api = API_BASE_URL + "/menu/" + itemId;
+                const api = API_BASE_URL + "/products/" + itemId;
 
                 const response = await fetch(api, {
                     method: 'DELETE',
@@ -302,16 +303,14 @@ class ProductService {
     }    
 
     getGroupedProducts() {       
-        let groupedProducts = {};
+        let groupedProducts = [];
 
         for (let category of this.productCategories) {
-            let categoryName = category.name;
-            groupedProducts[categoryName] = this.products.filter(product => product.category === categoryName);
+            let productsInCategory = this.products.filter(product => product.category.name === category.name);
+            groupedProducts.push([category, productsInCategory]);
         }
-
         return groupedProducts;
-    }
-    
+    }   
 
     updateSessionStorage() 
     {

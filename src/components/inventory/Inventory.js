@@ -1,46 +1,43 @@
 import '../../css/menu.css'
-import InventoryAddDialog from './InventoryAddDialog';
+import ProductDialog from './ProductDialog';
 import productService from '../../services/ProductService';
 import InventoryItem from './InventoryItem';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import SlDivider from '@shoelace-style/shoelace/dist/react/divider';
 import React, { useState, useEffect } from 'react';
-import InventoryEditDialog from './InventoryEditDialog';
 
 const Inventory = () => {
     const [groupedProducts, setGroupedProducts] = useState(productService.getGroupedProducts());
-    const [showAddDialog, setShowAddDialog] = useState(false)
-    const [showEditDialog, setShowEditDialog] = useState(false)
-
-    const [addCategory, setAddCategory] = useState('')
-    const [editItem, setEditItem] = useState({})
+    const [showDialog, setShowDialog] = useState(false);
+    const [dialogProduct, setDialogProduct] = useState(null);
+    const [dialogCategory, setDialogCategory] = useState(null);
 
     useEffect(() => {
-        const unsubscribe = productService.subscribe(updatedGroupedProducts => { setGroupedProducts([...updatedGroupedProducts]); });
+        const unsubscribe = productService.subscribe(updatedGroupedProducts => {
+            setGroupedProducts([...updatedGroupedProducts]);
+        });
 
         return () => {
             unsubscribe();
-        }
+        };
     }, []);
 
-    const handleCloseAddDialog = () => {
-        setAddCategory('')
-        setShowAddDialog(false)
+    const handleCloseDialog = () => {
+        setDialogProduct(null);
+        setDialogCategory(null);
+        setShowDialog(false);
     }
 
     const handleShowAddDialog = (category) => {
-        setAddCategory(category)
-        setShowAddDialog(true)
-    }
-
-    const handleCloseEditDialog = () => {
-        setEditItem({})
-        setShowEditDialog(false)
+        setDialogCategory(category);
+        setDialogProduct(null); // Ensure no product is set when adding a new one
+        setShowDialog(true);
     }
 
     const handleShowEditDialog = (item) => {
-        setEditItem(item)
-        setShowEditDialog(true)
+        setDialogCategory(item.category); // Assuming `item` contains a category object
+        setDialogProduct(item);
+        setShowDialog(true);
     }
 
     return (
@@ -49,15 +46,12 @@ const Inventory = () => {
                 <h1>Inventory Management</h1>
             </div>
             <div className='inv-items'>
-                {console.log("Grouped Products:")}
-                {console.log(groupedProducts)}
-                {Object.entries(groupedProducts).map(([category, products], groupIndex) => (
+                {groupedProducts.map(([category, products], groupIndex) => (
                     <div key={groupIndex} className='inv-group'>
                         <SlDivider></SlDivider>
                         <div className='inv-group-header'>
-                            <h2 className='inv-group-text'>{category}</h2>
-                            <span />
-                            <SlButton variant='success' className='inv-add-button' onClick={() => handleShowAddDialog(category)} href="#">
+                            <h2 className='inv-group-text'>{category.name}</h2>
+                            <SlButton variant='success' className='inv-add-button' onClick={() => handleShowAddDialog(category)}>
                                 Add Item
                             </SlButton>
                         </div>
@@ -67,9 +61,8 @@ const Inventory = () => {
                             ) : (
                                 products.map(item => (
                                     <InventoryItem
-                                        handleCloseEditDialog={handleCloseEditDialog}
                                         handleShowEditDialog={handleShowEditDialog}
-                                        key={item._id}
+                                        key={item.id}
                                         item={item}
                                     />
                                 ))
@@ -80,8 +73,7 @@ const Inventory = () => {
                 ))}
             </div>
 
-            {showAddDialog && addCategory !== '' && <InventoryAddDialog cat={addCategory} handleCloseAddDialog={handleCloseAddDialog} />}
-            {showEditDialog && Object.keys(editItem).length !== 0 && <InventoryEditDialog item={editItem} handleCloseEditDialog={handleCloseEditDialog} />}
+            {showDialog && <ProductDialog cat={dialogCategory} product={dialogProduct} handleCloseDialog={handleCloseDialog} />}
         </div>
     );
 }

@@ -32,8 +32,8 @@ function Cart() {
             {cartItems.length > 0 ? (
                 <div>
                     {cartItems.map((item) => (
-                        <CartItem key={item._id + (item.size ? item.size : '')} item={item} removeFromCart={removeFromCart} />
-                    ))}
+                        <CartItem key={item._id + item.size.label} item={item} removeFromCart={removeFromCart} />
+                    ))}                    
                     <p>Total: ${total.toFixed(2)}</p>
                     <div>
                         <SlButton onClick={confirmOrder}>PLACE ORDER</SlButton>

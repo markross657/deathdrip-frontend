@@ -101,8 +101,14 @@
 
     .inv-size-container {
         display: grid;
-        grid-template-columns: repeat(2, 40%);
-        justify-content: center;
+        grid-template-columns: 40% 30% 10%;
+        justify-content: space-between;
+    }
+
+    .inv-size-header{
+        border: 1px solid red;
+        display: grid;
+        grid-template-columns: 60% 40%
     }
 
     .inv-input {

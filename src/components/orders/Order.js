@@ -22,7 +22,8 @@ const Order = ({ order, startOrder, cancelOrder, completeOrder }) => {
     return (
         <div className="order-container">
             <div className="order-top">
-                <h2>{order.customerName}</h2>
+                <h2>Order: {order.id}</h2>
+                <h3>{order.customerName}</h3>
             </div>
             <div className="order-middle">
                 {order.items.map((item, index) => (
@@ -32,7 +33,7 @@ const Order = ({ order, startOrder, cancelOrder, completeOrder }) => {
                 ))}
             </div>
             <div className="order-bottom">
-                <span>Total: ${order.total.toFixed(2)}</span>
+                <span>Total: ${order.total}</span>
                 <span>Order Time: {new Date(order.orderDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             </div>
             <div className="order-button">

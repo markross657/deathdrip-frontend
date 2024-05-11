@@ -5,23 +5,21 @@ import CartService from '../../services/CartService';
 const MenuItem = ({ item }) => {
     const [selectedSize, setSelectedSize] = useState(() => {
         if (item.size.length > 0) {
-            return item.size[0].label; // Set default to the first available size
+            return item.size[0];
         }
+
         return '';
     });
 
-    const hasSizes = item.size.length > 0
-
     const handleSizeChange = (e) => {
-        setSelectedSize(e.target.value); // Update selected size in state
+        setSelectedSize(item.size[e.target.value]); // Update selected size in state
+        console.log("selected size changed")
+        console.log(selectedSize)
     };
 
     const handleAddToCart = () => {
         const itemToAdd = { ...item };
-        if (hasSizes) {
-            itemToAdd.size = selectedSize;
-            itemToAdd.price = item.size.find(size => size.label === selectedSize)?.price;
-        }
+        itemToAdd.size = selectedSize;
         CartService.addToCart(itemToAdd);
     };
 
@@ -31,26 +29,20 @@ const MenuItem = ({ item }) => {
                 <h3>{item.name}</h3>
             </div>
             <div className="menu-item-middle">
-                <span>{item.description}</span>
-                {hasSizes && (
-                    <div className="menu-item-size">
-                        <label htmlFor="size">Size: </label>
-                        <select id="size" value={selectedSize} onChange={handleSizeChange}>
-                            {item.size.map((sizeOption, index) => (
-                                <option key={index} value={sizeOption.label}>
-                                    {sizeOption.label}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                )}
+                <span>{item.description}</span>                
+                <div className="menu-item-size">
+                    <label htmlFor="size">Size: </label>
+                    <select id="size" value={selectedSize} onChange={handleSizeChange}>
+                        {item.size.map((sizeOption, index) => (
+                            <option key={index} value={index}>
+                                {sizeOption.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>                
             </div>
-            <div className="menu-item-bottom">
-                {hasSizes ? (
-                    <span>Price: $ {item.size.find(size => size.label === selectedSize)?.price}</span>
-                ) : (
-                    <span>Price: $ {item.price}</span>
-                )}
+            <div className="menu-item-bottom">                
+                <span>Price: $ {item.size.find(size => size.label === selectedSize.label)?.price}</span>               
             </div>
             <div className="menu-item-image">
                 <img src="./productimage1.png" alt="Product" />

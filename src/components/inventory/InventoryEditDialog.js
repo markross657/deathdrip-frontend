@@ -57,7 +57,7 @@ const InventoryEditDialog = ({ handleCloseEditDialog, item }) => {
         if (item.category !== 'Coffee') {
             item.size = [];
         }
-        InventoryService.updateInventoryItem(itemObj)
+        InventoryService.updateProduct(itemObj)
         handleCloseEditDialog()
     }
 

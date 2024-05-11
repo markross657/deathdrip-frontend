@@ -15,8 +15,8 @@ function CartItem({ item, removeFromCart }) {
                 <div className="cart-item-middle">
                 </div>
                 <div className="cart-item-bottom">
-                    {item.size && (<span className='cart-size'>Size: {item.size}</span>)}
-                    <span className='cart-price'>Price: {item.price}</span>
+                    <span className='cart-size'>Size: {item.size.label}</span>
+                    <span className='cart-price'>Price: {item.size.price}</span>
                     <span className='cart-quanity'>Quantity: {item.quantity}</span>
                 </div>
             </div>
