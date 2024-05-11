@@ -1,5 +1,5 @@
 import UserService from "./UserService";
-const API_BASE_URL='http://localhost:3520'
+const API_BASE_URL='http://3.26.170.85'
 
 class OrderService {
     constructor() {

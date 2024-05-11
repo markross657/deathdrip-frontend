@@ -1,5 +1,5 @@
 import CartService from "./CartService";
-const API_BASE_URL='http://localhost:3520';
+const API_BASE_URL='http://3.26.170.85';
 
 class UserService {
     constructor() {
