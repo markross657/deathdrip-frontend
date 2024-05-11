@@ -5,31 +5,30 @@ import SlInput from '@shoelace-style/shoelace/dist/react/input';
 import SlTextarea from '@shoelace-style/shoelace/dist/react/textarea';
 import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
 import productService from '../../services/ProductService';
-import '../../css/inventory.css'
+import '../../css/inventory.css';
 
 const ProductDialog = ({ handleCloseDialog, cat, product = null }) => {
-    const [id, setId] = useState(product ? product.id : undefined);
     const [name, setName] = useState(product ? product.name : '');
     const [description, setDescription] = useState(product ? product.description : '');
     const [sizes, setSizes] = useState(product ? product.size : [{ label: '', price: 0 }]);
 
     const [item, setItem] = useState({
-        id: id,
+        id: product ? product.id : undefined,
         name: name,
-        category: product? product.category : cat,
+        category: product ? product.category : cat,
         description: description,
         size: sizes,
     });
 
     useEffect(() => {
         setItem({
-            id: id,
+            id: product ? product.id : undefined,
             name: name,
             category: cat,
             description: description,
             size: sizes,
         });
-    }, [name, description, sizes, cat]);
+    }, [name, description, sizes, cat, product]);
 
     const handleClose = () => {
         handleCloseDialog();
@@ -74,7 +73,7 @@ const ProductDialog = ({ handleCloseDialog, cat, product = null }) => {
     return (
         <SlDialog key='add' size='large' className='inv-dialog' open={true}>
             <div className="inv-dialog-header">
-                <h2>{product ? `'Edit ${cat.name}`: 'Create Product'}</h2>
+                <h2>{product ? `'Edit ${cat.name}` : 'Create Product'}</h2>
             </div>
             <div className='inv-dialog-spacer'></div>
             <div className="inv-dialog-body">
@@ -85,7 +84,7 @@ const ProductDialog = ({ handleCloseDialog, cat, product = null }) => {
                 <div>
                     <h4>Description</h4>
                     <SlTextarea placeholder='Write a description here' onSlChange={handleDescriptionChange} value={description} size='small'></SlTextarea>
-                </div>                
+                </div>
                 <div className='inv-sizes'>
                     <div className='inv-size-header'>
                         <h4>Pricing by Size</h4>
@@ -93,19 +92,19 @@ const ProductDialog = ({ handleCloseDialog, cat, product = null }) => {
                     </div>
                     {sizes.map((size, index) => (
                         <div className="inv-size-container" key={index}>
-                            <SlInput 
-                                type="text" 
+                            <SlInput
+                                type="text"
                                 name="label"
                                 value={size.label}
                                 onSlChange={(e) => handleSizeChange(index, 'label', e.target.value)}
-                                ></SlInput>
+                            ></SlInput>
                             <SlInput
                                 type="number"
                                 name="price"
                                 value={size.price}
                                 onSlChange={(e) => handleSizeChange(index, 'price', e.target.value)}
                             ></SlInput>
-                            <SlIconButton onClick={(e) => handleDeleteSize(index)} size="large" name="x-square" label="delete" style={{ fontSize: '1.5rem' }}/>
+                            <SlIconButton onClick={(e) => handleDeleteSize(index)} size="large" name="x-square" label="delete" style={{ fontSize: '1.5rem' }} />
                         </div>
                     ))}
                 </div>
