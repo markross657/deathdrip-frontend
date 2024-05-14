@@ -10,7 +10,7 @@ import OrdersScreen from "./orders/OrdersScreen";
 
 const Main = () => {
 
-    const [active, setActive] = useState('Orders')
+    const [active, setActive] = useState('Menu')
     const user = UserService.getUser()
 
     return (

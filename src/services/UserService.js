@@ -1,4 +1,5 @@
 import CartService from "./CartService";
+import imageService from "./ImageService"
 const API_BASE_URL='http://3.26.170.85';
 
 class UserService {
@@ -114,7 +115,7 @@ class UserService {
     }
 
     async updateUserImage(file){
-
+        imageService.uploadUserImage(this.user.id, file);
     }
 
     setUserControl({ setHasUser }) {

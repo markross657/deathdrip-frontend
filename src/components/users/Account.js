@@ -3,6 +3,8 @@ import UserService from '../../services/UserService';
 import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import UpdateUserDetailsForm from './UpdateUserDetailsForm';
 import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
+import AccountOrders from './AccountOrders';
+import imageService from '../../services/ImageService';
 
 const Account = () => {
     const user = UserService.getUser();
@@ -49,35 +51,44 @@ const Account = () => {
     }
 
     return (
-        <div className="account-page">
-            <h1>Account Information</h1>
-            <div className="account-data">
-                <div className="account-information">
-                    <div>
-                        <h2>{user.firstName + ' ' + user.lastName}</h2>
-                        <h3>{getAccountType()}</h3>
-                    </div>
-                    <div>
-                        <p>
-                            <strong>Join Date:</strong> {user.joinDate ? user.joinDate : '01/01/1999'}
-                        </p>
-                        <p>
-                            {user.bio}
-                        </p>
-                    </div>
-                    <SlButton variant='success' onClick={() => openUpdateDialog()}>Update Information</SlButton>
-                </div>
-                <div className="account-avatar">
-                    <img
-                        width="200px"
-                        src={profileImageFile ? URL.createObjectURL(profileImageFile) : './ObsidianFox.png'}
-                        alt="User Display"
-                    />
-                    <div>
-                        <SlButton size='small' variant='warning' onClick={() => openImageUpdateDialog()}>Update Profile Image</SlButton>
-                    </div>
-                </div>
+        <>
+            <div className="account-page">
+                <h1>Account Information</h1>
+                <div className='account-content'>
+                    <div className="account-details">
+                        <div className="account-information">
+                            <div className='info-header'>
+                                <h2>{user.firstName + ' ' + user.lastName}</h2>
+                                <h3>Account Type: {getAccountType()}</h3>
+                            </div>
+                            <div className='info-details'>
+                                <h3>Join Date:</h3>
+                                <p>
+                                    {user.joinDate ? user.joinDate : '01/01/2024'}
+                                </p>
+                            </div>
+                            <div>
+                                <h3>Bio</h3>
+                                <p>{user.bio ? user.bio : "You have not entered a bio yet."}</p>
+                            </div>
+                            <SlButton onClick={() => openUpdateDialog()}>Update Information</SlButton>
+                        </div>
+                        <div className="account-avatar">
+                            <img
+                                width="200px"
+                                src={profileImageFile ? URL.createObjectURL(profileImageFile) : './ObsidianFox.png'}
+                                alt="User Display"
+                            />
+                            <div>
+                                <SlButton size='small' variant='warning' onClick={() => openImageUpdateDialog()}>Update Profile Image</SlButton>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div className='account-orders-container'>
+                        {user.accesslevel === 1 && <AccountOrders user={user} />}
+                    </div>
+                </div>
             </div>
 
             {isUpdateDialogOpen && <UpdateUserDetailsForm closeUpdateDialog={closeUpdateDialog} />}
@@ -98,7 +109,7 @@ const Account = () => {
                     <SlButton size='small' onClick={() => updateUserImage()} variant='warning'>Update</SlButton>
                 </div>
             </SlDialog>
-        </div>
+        </>
     );
 };
 

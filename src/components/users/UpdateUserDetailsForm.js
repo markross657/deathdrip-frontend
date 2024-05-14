@@ -68,31 +68,7 @@ const UpdateUserDetailsForm = ({closeUpdateDialog}) => {
                             size="medium"
                             onInput={(e) => setEmail(e.target.value)}
                         />
-                    </div>
-                    <div id='register-password-group' className="access-form-field">
-                        <h3>Password</h3>
-                        <SlInput
-                            type="password"
-                            id="password"
-                            password-toggle
-                            placeholder="Enter your password"
-                            value={password}
-                            size="medium"
-                            onInput={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-                    <div id='confirm-password-group' className="access-form-field">
-                        <h3>New Password</h3>
-                        <SlInput
-                            type="password"
-                            id="confirmPassword"
-                            password-toggle
-                            placeholder="Enter your new Password"
-                            value={confirmPassword}
-                            size="medium"
-                            onInput={(e) => setConfirmPassword(e.target.value)}
-                        />
-                    </div>
+                    </div>                    
                     <br />
                     <div className="access-form-field">
                         <h3>Update Bio</h3>
@@ -100,7 +76,7 @@ const UpdateUserDetailsForm = ({closeUpdateDialog}) => {
                             type="text"
                             password-toggle
                             placeholder="Update your Bio"
-                            value={confirmPassword}
+                            value={bio}
                             size="medium"
                             onInput={(e) => setBio(e.target.value)}
                         />
@@ -112,7 +88,7 @@ const UpdateUserDetailsForm = ({closeUpdateDialog}) => {
                             </SlButton>
                         </div>
                         <div className='inv-item-button'>
-                            <SlButton size='large' variant='success' href="#">
+                            <SlButton onClick={handleSubmit} size='large' variant='success' href="#">
                                 Save
                             </SlButton>
                         </div>

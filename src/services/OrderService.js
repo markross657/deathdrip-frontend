@@ -176,12 +176,8 @@ class OrderService {
         return this.orders;
     }
 
-    // Get orders by user ID with an optional status filter
-    getOrdersByUserId(userId, status = null) {
-        let filteredOrders = this.orders.filter(order => order.customerId === userId);
-        if (status) {
-            filteredOrders = filteredOrders.filter(order => order.status === status);
-        }
+    getOrdersByUserId(userId) {
+        let filteredOrders = this.orders.filter(order => order.customerId === userId);        
         return filteredOrders;
     }
 
