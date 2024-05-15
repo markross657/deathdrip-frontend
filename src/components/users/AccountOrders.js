@@ -13,7 +13,7 @@ const AccountOrders = ({ user }) => {
         return () => {
             unsubscribe();
         };
-    }, []);
+    }, [user.id]);
 
     const currentOrders = myOrders.filter(order => order.status === 'Processing' || order.status === 'Pending');
     const pastOrders = myOrders.filter(order => order.status === 'Complete' || order.status === 'Cancelled');
