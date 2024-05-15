@@ -4,7 +4,6 @@ import SlButton from '@shoelace-style/shoelace/dist/react/button';
 import UpdateUserDetailsForm from './UpdateUserDetailsForm';
 import SlDialog from '@shoelace-style/shoelace/dist/react/dialog';
 import AccountOrders from './AccountOrders';
-import imageService from '../../services/ImageService';
 
 const Account = () => {
     const user = UserService.getUser();

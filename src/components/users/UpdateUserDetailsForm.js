@@ -8,8 +8,6 @@ const UpdateUserDetailsForm = ({closeUpdateDialog}) => {
     const user = UserService.getUser()
 
     const [email, setEmail] = useState(user.email)
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
     const [firstName, setFirstName] = useState(user.firstName)
     const [lastName, setLastName] = useState(user.lastName)
     const [bio, setBio] = useState(user.bio)

@@ -12,13 +12,10 @@ class OrderService {
     
     //Subscribers
     subscribe(callback) {
-        this.getOrdersFromAPI();     
-
         this.subscribers.push({ callback });
         return () => {
             this.subscribers = this.subscribers.filter(subscriber => subscriber.callback !== callback);
         };
-
     }
 
     notifySubscribers() {
@@ -89,7 +86,8 @@ class OrderService {
                     this.notifySubscribers();
                     console.log("Updated order in orders")
                     console.log(this.orders[index])
-                }                
+                }     
+                this.getOrdersFromAPI();           
             } 
             else
             {
@@ -143,6 +141,7 @@ class OrderService {
             if (response.ok) {
                 const createdOrder = await response.json()
                 this.activeOrder = createdOrder
+                this.getOrdersFromAPI();          
                 return true
             } 
             else 
@@ -194,6 +193,8 @@ class OrderService {
             orderToChange.status = newStatus
         }
         this.updateOrder(orderToChange)
+        this.getOrdersFromAPI();          
+
         this.updateSessionStorage();
         this.notifySubscribers();
     }
